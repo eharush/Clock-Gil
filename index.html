@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>שעון גיל</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Varela+Round&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <button id="homeBtn" class="brand" type="button" aria-label="חזרה למסלול השלבים">
+      <svg class="brand-mark" viewBox="-20 -20 40 40" aria-hidden="true">
+        <circle r="18" class="bm-rim"/><circle r="14" class="bm-face"/>
+        <line x1="0" y1="0" x2="0" y2="-8" class="bm-hour"/>
+        <line x1="0" y1="0" x2="10" y2="0" class="bm-min"/>
+        <circle r="2.4" class="bm-cap"/>
+      </svg>
+      <span>שעון גיל</span>
+    </button>
+    <div class="top-actions">
+      <button id="soundBtn" class="icon-btn" type="button" aria-pressed="true" aria-label="צלילים">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path class="ico-fill" d="M4 9h4l5-4v14l-5-4H4z"/><path class="ico-on" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/><path class="ico-off" d="M16.5 9.5l5 5M21.5 9.5l-5 5"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="app">
+
+  <!-- מסך הבית -->
+  <section id="screen-home" class="screen">
+    <div class="hero">
+      <div class="hero-text">
+        <div class="mascot-row">
+          <div class="owl" data-owl></div>
+          <p class="bubble" id="homeBubble">היי! אני טיקי. בואו נלמד יחד לקרוא שעון מחוגים, צעד אחר צעד.</p>
+        </div>
+        <h1>לומדים לקרוא <span class="t-hour">שעון</span> <span class="t-min">מחוגים</span></h1>
+        <p class="lead">8 שלבים קצרים: מהמספרים על השעון ועד קריאה של כל שעה. בכל שלב יש הסבר עם שעון שאפשר לגעת בו, ואחריו תרגול.</p>
+        <div class="hero-actions">
+          <button id="continueBtn" class="btn big" type="button">מתחילים ←</button>
+          <button id="freeBtnTop" class="btn ghost" type="button">שעון חופשי</button>
+        </div>
+      </div>
+      <figure class="hero-clock">
+        <div id="liveClock" class="clock-host"></div>
+        <figcaption>השעה אצלכם עכשיו: <span id="liveDigital" class="dig" dir="ltr"></span><br><span id="liveWords" class="live-words"></span></figcaption>
+      </figure>
+    </div>
+
+    <div class="path-head">
+      <h2>מסלול השלבים</h2>
+      <p id="pathSummary" class="muted"></p>
+    </div>
+    <ol class="levels" id="levelList"></ol>
+
+    <footer class="home-foot">
+      <button id="unlockBtn" class="link-btn" type="button">להורים ולמורים: פתיחת כל השלבים</button>
+      <button id="resetBtn" class="link-btn" type="button">איפוס ההתקדמות</button>
+      <span id="resetConfirm" class="confirm" hidden>בטוחים? <button id="resetYes" class="link-btn danger" type="button">כן, לאפס</button> <button id="resetNo" class="link-btn" type="button">ביטול</button></span>
+    </footer>
+  </section>
+
+  <!-- מסך הסבר -->
+  <section id="screen-lesson" class="screen" hidden>
+    <div class="stage">
+      <div class="stage-clock">
+        <div id="lessonClock" class="clock-host"></div>
+        <div id="lessonReadout" class="readout" hidden></div>
+        <div id="lessonNote" class="note" hidden></div>
+      </div>
+      <div class="stage-panel">
+        <div class="panel-head">
+          <span class="eyebrow" id="lessonEyebrow"></span>
+          <h2 id="lessonTitle"></h2>
+          <div class="dots" id="lessonDots" aria-hidden="true"></div>
+        </div>
+        <article class="card lesson-card">
+          <div class="card-title-row">
+            <h3 id="stepTitle"></h3>
+            <button class="icon-btn small speak-btn" id="speakStep" type="button" aria-label="הקראה" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path class="ico-fill" d="M4 9h4l5-4v14l-5-4H4z"/><path class="ico-on" d="M16 8.5a5 5 0 0 1 0 7"/></svg>
+            </button>
+          </div>
+          <div id="stepText" class="step-text"></div>
+          <div id="stepActions" class="step-actions"></div>
+        </article>
+        <div class="nav">
+          <button id="prevStep" class="btn ghost" type="button">→ הקודם</button>
+          <button id="nextStep" class="btn" type="button">הבא ←</button>
+        </div>
+        <button id="skipToPractice" class="link-btn" type="button">דלגו ישר לתרגול</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- מסך תרגול -->
+  <section id="screen-practice" class="screen" hidden>
+    <div class="practice-top">
+      <span class="eyebrow" id="practiceEyebrow"></span>
+      <div class="progress" role="progressbar" aria-valuemin="0" id="progressWrap"><div id="progressBar"></div></div>
+      <span id="progressText" class="progress-text" dir="ltr"></span>
+    </div>
+    <div class="stage">
+      <div class="stage-clock">
+        <div id="practiceClock" class="clock-host"></div>
+        <p id="dragHelp" class="drag-help" hidden>גוררים את המחוגים עם האצבע או העכבר</p>
+      </div>
+      <div class="stage-panel">
+        <div class="card question-card">
+          <div class="card-title-row">
+            <p id="qPrompt" class="q-prompt"></p>
+            <button class="icon-btn small speak-btn" id="speakQ" type="button" aria-label="הקראה" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path class="ico-fill" d="M4 9h4l5-4v14l-5-4H4z"/><path class="ico-on" d="M16 8.5a5 5 0 0 1 0 7"/></svg>
+            </button>
+          </div>
+          <div id="qAnswers" class="answers"></div>
+          <div id="qFeedback" class="feedback" role="status" hidden></div>
+        </div>
+        <div class="nav">
+          <button id="backToLesson" class="btn ghost" type="button">→ להסבר</button>
+          <button id="qCheck" class="btn" type="button" hidden>בדיקה</button>
+          <button id="qNext" class="btn" type="button" hidden>הבא ←</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- מסך סיום שלב -->
+  <section id="screen-result" class="screen" hidden>
+    <div class="result card">
+      <div class="owl big" data-owl="happy"></div>
+      <span class="eyebrow" id="resultEyebrow"></span>
+      <h2 id="resultTitle"></h2>
+      <div class="stars big-stars" id="resultStars"></div>
+      <p id="resultText" class="lead"></p>
+      <div class="result-actions">
+        <button id="resultNext" class="btn big" type="button">לשלב הבא ←</button>
+        <button id="resultRetry" class="btn ghost" type="button">לתרגל שוב</button>
+        <button id="resultHome" class="btn ghost" type="button">למסלול</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- שעון חופשי -->
+  <section id="screen-free" class="screen" hidden>
+    <div class="stage">
+      <div class="stage-clock">
+        <div id="freeClock" class="clock-host"></div>
+        <div id="freeReadout" class="readout"></div>
+      </div>
+      <div class="stage-panel">
+        <div class="panel-head">
+          <span class="eyebrow">משחק חופשי</span>
+          <h2>שעון חופשי</h2>
+        </div>
+        <div class="card">
+          <p class="step-text">גררו את <span class="t-min">המחוג הארוך</span> ואת <span class="t-hour">המחוג הקצר</span> לכל מקום, ובדקו מה השעה. אפשר גם להשתמש בכפתורים.</p>
+          <div class="step-actions">
+            <button class="chip" type="button" data-free="+5">5 דקות קדימה</button>
+            <button class="chip" type="button" data-free="+15">רבע שעה קדימה</button>
+            <button class="chip" type="button" data-free="+60">סיבוב שלם (שעה)</button>
+            <button class="chip" type="button" data-free="now">השעה עכשיו</button>
+          </div>
+          <label class="toggle"><input type="checkbox" id="freeRing"> להראות את הדקות מסביב לשעון</label>
+          <label class="toggle"><input type="checkbox" id="freeSnap"> המחוג הארוך קופץ כל 5 דקות</label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<canvas id="confetti" aria-hidden="true"></canvas>
+
+<script src="js/clock.js"></script>
+<script src="js/levels.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
