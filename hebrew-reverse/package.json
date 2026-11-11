@@ -1,0 +1,85 @@
+{
+  "name": "hebrew-reverse",
+  "displayName": "%extension.displayName%",
+  "description": "%extension.description%",
+  "version": "0.1.0",
+  "publisher": "eharush",
+  "private": true,
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Formatters",
+    "Other"
+  ],
+  "keywords": [
+    "hebrew",
+    "rtl",
+    "bidi",
+    "reverse",
+    "עברית"
+  ],
+  "main": "./out/extension.js",
+  "l10n": "./l10n",
+  "contributes": {
+    "commands": [
+      {
+        "command": "hebrewReverse.reverse",
+        "title": "%command.reverse.title%",
+        "icon": "$(arrow-swap)",
+        "enablement": "!editorReadonly"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "hebrewReverse.reverse",
+          "group": "navigation",
+          "when": "config.hebrewReverse.showEditorTitleButton"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "hebrewReverse.reverse",
+          "group": "1_modification"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "%extension.displayName%",
+      "properties": {
+        "hebrewReverse.mode": {
+          "type": "string",
+          "enum": [
+            "phrase",
+            "word"
+          ],
+          "default": "phrase",
+          "enumDescriptions": [
+            "%config.mode.phrase%",
+            "%config.mode.word%"
+          ],
+          "description": "%config.mode.description%"
+        },
+        "hebrewReverse.showEditorTitleButton": {
+          "type": "boolean",
+          "default": true,
+          "description": "%config.showEditorTitleButton.description%"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "npm run compile && node --test \"out/test/**/*.test.js\"",
+    "vscode:prepublish": "npm run compile",
+    "package": "vsce package --skip-license --allow-missing-repository"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "~1.75.0",
+    "@vscode/vsce": "^3.0.0",
+    "typescript": "^5.6.0"
+  }
+}
