@@ -1,9 +1,0 @@
-{
-  "extension.displayName": "Hebrew Reverse",
-  "extension.description": "Reverses the letter order of Hebrew text in the editor (for example \"םולש\" becomes \"שלום\"), leaving other letters and numbers untouched.",
-  "command.reverse.title": "Reverse Hebrew Text",
-  "config.mode.description": "How Hebrew text is reversed.",
-  "config.mode.phrase": "Reverse a whole Hebrew phrase at once, so the word order is flipped too. Numbers and Latin words inside the phrase keep their own letter order.",
-  "config.mode.word": "Reverse each Hebrew word in place. Nothing else on the line moves.",
-  "config.showEditorTitleButton.description": "Show the reverse button in the editor title bar."
-}
